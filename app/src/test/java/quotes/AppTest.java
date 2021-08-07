@@ -10,7 +10,7 @@ class AppTest {
 
 @Test public void randomQuoteTest(){
     App app = new App();
-    String quote = app.randomQuote();
+    String quote = app.randomQuote("src/test/resources/recentquotes.json");
     System.out.println(quote);
     assertTrue(quote !=null);
 }

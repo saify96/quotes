@@ -40,14 +40,13 @@ public class App {
         }
     }
 
-    public static String randomQuote() {
-        ArrayList<Quotes> quotes = null;
-        Gson gson = new Gson();
+    public static String randomQuote(String path)  {
+        ArrayList<Quotes> quotes =null;
+        Gson gson =new Gson();
         try {
-            FileReader reader = new FileReader("recentquotes.json");
-            Type quotesList = new TypeToken<ArrayList<Quotes>>() {
-            }.getType();
-            quotes = gson.fromJson(reader, quotesList);
+            FileReader reader = new FileReader(path);
+            Type quotesList = new TypeToken<ArrayList<Quotes>>(){}.getType();
+            quotes =gson.fromJson(reader,quotesList);
             int idx = (int) (quotes.size() * Math.random());
             return quotes.get(idx).toString();
         } catch (IOException e) {
