@@ -9,13 +9,13 @@ import com.google.gson.Gson;
 
 public class App {
     public static void main(String[] args) {
-        System.out.println(randomQuote());
+        System.out.println(randomQuote("recentquotes.json"));
     }
-    public static String randomQuote()  {
+    public static String randomQuote(String path)  {
         ArrayList<Quotes> quotes =null;
         Gson gson =new Gson();
         try {
-            FileReader reader = new FileReader("recentquotes.json");
+            FileReader reader = new FileReader(path);
             Type quotesList = new TypeToken<ArrayList<Quotes>>(){}.getType();
             quotes =gson.fromJson(reader,quotesList);
             int idx = (int) (quotes.size() * Math.random());
