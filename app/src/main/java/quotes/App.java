@@ -1,16 +1,45 @@
 package quotes;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 public class App {
     public static void main(String[] args) {
-        System.out.println(randomQuote("recentquotes.json"));
+        String api = "http://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en";
+        try {
+            URL url = new URL(api);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            int response = connection.getResponseCode();
+            InputStream inputStream = connection.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String line = bufferedReader.readLine();
+            if (response == 200) {
+                while (line != null) {
+                    System.out.println(line);
+                    line = bufferedReader.readLine();
+                }
+                bufferedReader.close();
+            } else {
+                System.out.println(randomQuote());
+            }
+            connection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
     public static String randomQuote(String path)  {
         ArrayList<Quotes> quotes =null;
         Gson gson =new Gson();
@@ -25,4 +54,6 @@ public class App {
         }
         return null;
     }
+
 }
+
